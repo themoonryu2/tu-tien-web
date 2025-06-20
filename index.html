@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Truyện Tu Tiên Ma Mị</title>
+  <meta name="description" content="Đọc Trùng sinh Ma giáo giáo chủ và nhiều truyện tu tiên tự động.">
+  <!-- inline CSS for simplicity -->
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
+    .wrapper{max-width:800px;margin:2rem auto;padding:0 1rem}
+    select{width:100%;padding:.5rem;margin:1rem 0;border:1px solid #ccc;border-radius:.25rem}
+    header h1{text-align:center;margin-bottom:1rem}
+    img.cover{width:100%;border-radius:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:1rem}
+    #story{background:#fff;padding:1.5rem;border-radius:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:2rem}
+    #novel-title{font-size:1.5rem;margin-bottom:1rem}
+    #quotes{background:url('https://i.postimg.cc/abc456/quotes-bg.jpg')center/cover no-repeat;padding:2rem;border-radius:.5rem;color:#f0f0f0;margin-bottom:2rem}
+    #quotes h2{text-align:center;margin-bottom:1rem}
+    .quote-card{background:rgba(0,0,0,.6);padding:1rem;border-radius:.5rem;margin-bottom:1rem}
+    .quote-card blockquote{font-style:italic;margin-bottom:.5rem}
+    .quote-card .author{text-align:right;font-size:.9rem}
+    @media(max-width:600px){#novel-title{font-size:1.25rem}#quotes{padding:1rem}}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Chọn truyện -->
+    <section>
+      <select id="story-select"></select>
+      <img id="story-cover" class="cover" alt="Cover truyện">
+    </section>
+
+    <!-- Hiển thị chương -->
+    <section id="story">
+      <h2 id="novel-title">Vui lòng chọn truyện…</h2>
+      <div id="novel-content"></div>
+      <select id="chapter-select"></select>
+    </section>
+
+    <!-- Quotes -->
+    <section id="quotes">
+      <h2>Trích Đoạn Hấp Dẫn</h2>
+      <div id="quotes-container"></div>
+    </section>
+  </div>
+
+  <script>
+    const stories = [];
+
+    async function loadStories() {
+      const res = await fetch('assets/data/stories.json');
+      const arr = await res.json();
+      stories.push(...arr);
+      const sel = document.getElementById('story-select');
+      sel.innerHTML = arr.map(s=>`<option value="${s.id}">${s.title}</option>`).join('');
+      sel.onchange = onStoryChange;
+      onStoryChange();
+    }
+
+    async function onStoryChange() {
+      const storyId = document.getElementById('story-select').value;
+      const s = stories.find(x=>x.id===storyId);
+      document.getElementById('story-cover').src = s.cover;
+      // load list chương
+      const list = await fetch(`/.netlify/functions/fetchChapterList?story=${storyId}`)
+                         .then(r=>r.json());
+      const chapSel = document.getElementById('chapter-select');
+      chapSel.innerHTML = list.map(ch=>`<option value="${ch.slug}">${ch.title}</option>`).join('');
+      chapSel.onchange = ()=>loadChapter(storyId, chapSel.value);
+      // load chương đầu
+      chapSel.value = list[0].slug;
+      loadChapter(storyId, list[0].slug);
+    }
+
+    async function loadChapter(storyId, slug) {
+      const titleEl = document.getElementById('novel-title');
+      const contentEl = document.getElementById('novel-content');
+      titleEl.textContent = 'Đang tải chương…';
+      contentEl.innerHTML = '';
+      try {
+        const data = await fetch(`/.netlify/functions/fetchChapter?story=${storyId}&chapter=${slug}`)
+                              .then(r=>r.json());
+        titleEl.textContent = data.title;
+        contentEl.innerHTML = DOMPurify.sanitize(data.content);
+        contentEl.scrollIntoView({behavior:'smooth'});
+      } catch(e) {
+        titleEl.textContent = 'Lỗi tải chương';
+        contentEl.textContent = e.message;
+      }
+    }
+
+    function loadQuotes() {
+      const quotes = [
+        { t:"Thiên địa vô tình, tu tiên hữu tình.", author:"Cổ Kim" },
+        { t:"Lòng người như nước, lúc yên lặng, lúc cuộn sóng.", author:"Ẩn Cảnh" },
+        { t:"Anh hùng hào kiệt, giang hồ chỉ là trò chơi phù du.", author:"Giang Sơn" }
+      ];
+      document.getElementById('quotes-container').innerHTML =
+        quotes.map(q=>`
+          <div class="quote-card">
+            <blockquote>“${DOMPurify.sanitize(q.t)}”</blockquote>
+            <p class="author">— ${DOMPurify.sanitize(q.author)}</p>
+          </div>`
+        ).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      loadStories();
+      loadQuotes();
+    });
+  </script>
+</body>
+</html>
