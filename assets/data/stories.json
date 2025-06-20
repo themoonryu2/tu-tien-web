@@ -1,0 +1,27 @@
+[
+  {
+    "id": "Bi-Thu-Trung-Sinh",
+    "title": "Bí Thư Trùng Sinh",
+    "cover": "https://i.postimg.cc/DwvxJNy6/bi-thu-trung-sinh.jpg",
+    "baseUrl": "https://truyenhdt.com/truyen/bi-thu-trung-sinh/"
+  },
+  {
+    "id": "Trung-Sinh-Chi-Nha-Noi",
+    "title": "Trùng Sinh Chi Nha Nội",
+    "cover": "https://i.postimg.cc/yxNNSBtB/trung-sinh-chi-nha-noi.jpg",
+    "baseUrl": "https://truyenhdt.com/truyen/trung-sinh-chi-nha-noi/"
+  },
+   {
+    "id": "Quan-Lo-Thuong-Do",
+    "title": "Quan Lộ Thương Đồ",
+    "cover": "https://i.postimg.cc/vZXbfC7Z/quan-lo-thuong-do.jpg",
+    "baseUrl": "https://truyenhdt.com/truyen/quan-lo-thuong-do/"
+ },
+  {
+    "id": "Quan-Than",
+    "title": "Quan Thần",
+    "cover": "https://i.postimg.cc/FzhTyCVh/quan-than.jpg",
+    "baseUrl": "https://truyenhdt.com/truyen/quan-than/"
+     }
+  // thêm truyện khác theo mẫu
+]
