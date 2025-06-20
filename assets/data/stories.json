@@ -1,26 +1,26 @@
 [
   {
-    "id": "Bi-Thu-Trung-Sinh",
+    "id": "bi-thu-trung-sinh",
     "title": "Bí Thư Trùng Sinh",
     "cover": "https://i.postimg.cc/DwvxJNy6/bi-thu-trung-sinh.jpg",
     "baseUrl": "https://sstruyen.vn/bi-thu-trung-sinh"
   },
   {
-    "id": "Trung-Sinh-Chi-Nha-Noi",
+    "id": "trung-sinh-chi-nha-noi",
     "title": "Trùng Sinh Chi Nha Nội",
     "cover": "https://i.postimg.cc/yxNNSBtB/trung-sinh-chi-nha-noi.jpg",
     "baseUrl": "https://sstruyen.vn/trung-sinh-chi-nha-noi"
   },
-   {
-    "id": "Quan-Lo-Thuong-Do",
+  {
+    "id": "quan-lo-thuong-do",
     "title": "Quan Lộ Thương Đồ",
     "cover": "https://i.postimg.cc/vZXbfC7Z/quan-lo-thuong-do.jpg",
     "baseUrl": "https://sstruyen.vn/quan-lo-thuong-do"
- },
+  },
   {
-    "id": "Quan-Than",
+    "id": "quan-than",
     "title": "Quan Thần",
     "cover": "https://i.postimg.cc/FzhTyCVh/quan-than.jpg",
     "baseUrl": "https://sstruyen.vn/quan-than"
-    }
+  }
 ]
