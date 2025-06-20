@@ -1,32 +1,44 @@
-const base = "https://sstruyen.vn/bi-thu-trung-sinh";
-const proxy = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.es.js';
 
-const chapSel = document.getElementById("chapter-select");
-const cover   = document.getElementById("cover");
-const titleEl = document.getElementById("title");
-const content = document.getElementById("content");
+const storySelect   = document.getElementById('story-select');
+const coverImg      = document.getElementById('story-cover');
+const chapSelect    = document.getElementById('chapter-select');
+const chapTitle     = document.getElementById('chapter-title');
+const chapContent   = document.getElementById('story-content');
+const stories       = await fetch('assets/data/stories.json').then(r=>r.json());
 
-// Tạo dropdown 1→100 (dự phòng nếu không lấy được list động)
-chapSel.innerHTML = Array.from({length:100},(_,i)=>
-  `<option value="chuong-${i+1}">Chương ${i+1}</option>`
-).join("");
-chapSel.onchange = ()=>loadChapter(chapSel.value);
+storySelect.innerHTML = stories.map(s=>
+  `<option value="${s.id}">${s.title}</option>`
+).join('');
+storySelect.addEventListener('change', init);
+chapSelect.addEventListener('change', ()=>loadChapter(storySelect.value, chapSelect.value));
 
-async function loadChapter(slug){
-  titleEl.textContent="Đang tải…"; content.innerHTML="";
-  cover.src = `${base}/${slug}/`; // cover URL giả, vì site không rõ cover
+init();
+async function init(){
+  const sid = storySelect.value || stories[0].id;
+  const s = stories.find(x=>x.id===sid);
+  coverImg.src = s.cover;
   try {
-    const res = await fetch(proxy(`${base}/${slug}/`));
-    const html = await res.text();
-    const doc = new DOMParser().parseFromString(html,"text/html");
-    const t = doc.querySelector("h1")?.textContent || slug;
-    const c = doc.querySelector(".chapter-content")?.innerHTML || "<p>Không có nội dung</p>";
-    titleEl.textContent = DOMPurify.sanitize(t);
-    content.innerHTML = DOMPurify.sanitize(c);
+    const list = await fetch(`/.netlify/functions/fetchChapterList?story=${sid}`)
+                     .then(r=>r.ok? r.json(): Promise.reject(r.status));
+    chapSelect.innerHTML = list.map(c=>`<option value="${c.slug}">${c.title}</option>`).join('');
+    loadChapter(sid, list[0].slug);
   } catch(e){
-    titleEl.textContent="Lỗi tải"; content.textContent=e.message;
+    chapTitle.textContent = 'Lỗi lấy mục lục';
+    console.error(e);
   }
 }
 
-// Load chương 1 mặc định
-loadChapter("chuong-1");
+async function loadChapter(sid, slug){
+  chapTitle.textContent = 'Đang tải chương…';
+  chapContent.innerHTML = '';
+  try {
+    const data = await fetch(`/.netlify/functions/fetchChapter?story=${sid}&chapter=${slug}`)
+                       .then(r=>r.ok? r.json(): Promise.reject(r.status));
+    chapTitle.textContent = data.title;
+    chapContent.innerHTML = DOMPurify.sanitize(data.content);
+  } catch(e){
+    chapTitle.textContent = 'Lỗi tải chương';
+    console.error(e);
+  }
+}
