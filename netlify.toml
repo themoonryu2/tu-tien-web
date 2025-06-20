@@ -2,7 +2,6 @@
   publish   = "."
   functions = "netlify/functions"
 
-
 [[headers]]
   for = "/*"
   X-Frame-Options           = "DENY"
@@ -14,8 +13,9 @@
     script-src 'self' https://cdn.jsdelivr.net;
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://i.postimg.cc data:;
-    connect-src 'self' https://truyenhdt.com;
+    connect-src 'self' https://sstruyen.vn;
   """
+
 
 
 
