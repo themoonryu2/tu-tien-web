@@ -3,33 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Bí Thư Trùng Sinh</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
-    .wrap{max-width:800px;margin:2rem auto;padding:0 1rem}
-    header, section{margin-bottom:2rem}
-    header select, #chapter-select{width:100%;padding:.5rem;margin:1rem 0}
-    img{width:100%;border-radius:.5rem;object-fit:cover;margin-bottom:1rem}
-    #story{background:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-    #quotes{background:#3366ff;color:#fff;padding:1rem;border-radius:.5rem}
-    .quote{margin-bottom:1rem;font-style:italic}
-    .author{text-align:right;font-weight:bold}
-  </style>
-  <script defer type="module" src="main.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+  <title>Web Truyện Tu Tiên</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js" defer></script>
+  <script type="module" src="main.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Bí Thư Trùng Sinh</h1>
-      <select id="chapter-select"></select>
-      <img id="cover" alt="Cover truyện">
-    </header>
+  <div class="container">
+    <h1>Web Truyện Tu Tiên Ma Mị</h1>
+    <select id="story-select"></select>
+    <img id="story-cover" class="cover" loading="lazy">
+
     <section id="story">
-      <h2 id="title">Đang chờ chương…</h2>
-      <article id="content"></article>
+      <h2 id="chapter-title">Chọn truyện/chương…</h2>
+      <div id="story-content"></div>
+      <select id="chapter-select"></select>
     </section>
+
     <section id="quotes">
       <div class="quote">“Thiên địa vô tình, tu tiên hữu tình.”<div class="author">— Cổ Kim</div></div>
       <div class="quote">“Lòng người như nước, lúc yên lặng, lúc cuộn sóng.”<div class="author">— Ẩn Cảnh</div></div>
