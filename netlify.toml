@@ -2,20 +2,5 @@
   publish   = "."
   functions = "netlify/functions"
 
-[[headers]]
-  for = "/*"
-  X-Frame-Options           = "DENY"
-  X-XSS-Protection          = "1; mode=block"
-  X-Content-Type-Options    = "nosniff"
-  Referrer-Policy           = "strict-origin-when-cross-origin"
-  Content-Security-Policy   = """
-    default-src 'self';
-    script-src 'self' https://cdn.jsdelivr.net;
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' https://i.postimg.cc data:;
-    connect-src 'self' https://sstruyen.vn;
-  """
-
-
 
 
