@@ -1,28 +1,37 @@
-// netlify/functions/fetchChapterList.js
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-const stories = require('../../assets/data/stories.json');
+import fetch from "node-fetch";
+import cheerio from "cheerio";
+import { readFileSync } from "fs";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
-exports.handler = async ({ queryStringParameters }) => {
+export const handler = async ({ queryStringParameters }) => {
   try {
-    const storyId = queryStringParameters.story;
-    const s = stories.find(x => x.id === storyId);
-    if (!s) throw new Error("Unknown story");
-    const html = await fetch(s.baseUrl).then(r => r.text());
+    const storyId = queryStringParameters?.story;
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const data = JSON.parse(
+      readFileSync(resolve(__dirname, "../../assets/data/stories.json"), "utf-8")
+    );
+    const story = data.find((s) => s.id === storyId);
+    if (!story) throw new Error("Unknown story");
+
+    const html = await fetch(story.baseUrl).then((r) => r.text());
     const $ = cheerio.load(html);
-    const list = [];
-    $('.chapter-list a').each((_, el) => {
-      const href = $(el).attr('href');
-      const slug = href.split('/').filter(Boolean).pop();
+    const chapters = [];
+    $(".chapter-list a").each((_, el) => {
+      const href = $(el).attr("href");
+      const slug = href.split("/").filter(Boolean).pop();
       const title = $(el).text().trim();
-      if (slug && title) list.push({ slug, title });
+      if (slug && title) chapters.push({ slug, title });
     });
+    if (!chapters.length) throw new Error("No chapters found");
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type':'application/json','Access-Control-Allow-Origin':'*' },
-      body: JSON.stringify(list)
+      headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify(chapters),
     };
-  } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+  } catch (err) {
+    console.error(err);
+    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 };
