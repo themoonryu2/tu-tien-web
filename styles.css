@@ -4,24 +4,20 @@
   --text: #333;
   --accent: #3366ff;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); }
-.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-header { text-align: center; }
-header select { padding: .5rem; font-size: 1rem; }
-#story-cover { width: 100%; max-height: 400px; object-fit: cover; border-radius: .5rem; margin: 1rem 0; }
-main section { margin-bottom: 2rem; }
-#story { background: var(--card); padding: 1.5rem; border-radius: .5rem; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
-#novel-title { font-size: 1.5rem; margin-bottom: 1rem; }
-#novel-content p { margin-bottom: 1rem; line-height: 1.8; }
-#chapter-select { width: 100%; padding: .5rem; margin-top: 1rem; }
-#quotes { background: var(--accent); padding: 2rem; border-radius: .5rem; color: #fff; }
-#quotes-container { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; }
-.quote-card { background: rgba(0,0,0,.3); padding: 1rem; border-radius: .5rem; }
-.quote-card blockquote { font-style: italic; margin-bottom: .5rem; }
-.quote-card .author { text-align: right; font-weight: bold; }
-@media(max-width:600px) {
-  #novel-title { font-size: 1.25rem; }
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text)}
+.container{max-width:900px;margin:2rem auto;padding:0 1rem}
+header{text-align:center}
+header select, #chapter-select{padding:.5rem;font-size:1rem;width:100%;margin:1rem 0;border:1px solid #ccc;border-radius:.25rem}
+#story-cover{width:100%;max-height:400px;object-fit:cover;border-radius:.5rem;margin-bottom:1rem}
+main section{margin-bottom:2rem}
+#story{background:var(--card);padding:1.5rem;border-radius:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+#novel-title{font-size:1.5rem;margin-bottom:1rem}
+#novel-content p{margin-bottom:1rem;line-height:1.6}
+#quotes{background:var(--accent);padding:2rem;border-radius:.5rem;color:#fff}
+#quotes-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.quote-card{background:rgba(0,0,0,.3);padding:1rem;border-radius:.5rem}
+.quote-card blockquote{font-style:italic;margin-bottom:.5rem}
+.quote-card .author{text-align:right;font-weight:bold}
+@media(max-width:600px){#novel-title{font-size:1.25rem}#quotes{padding:1rem}}
 
